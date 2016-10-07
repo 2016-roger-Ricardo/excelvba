@@ -1,0 +1,102 @@
+Sub Dados_Filtrados()
+
+Dim w As Worksheet
+Dim linha As Integer
+Dim xPesq As String
+Dim xCel As String
+Dim regs As Integer
+Dim coluna
+Dim lv
+'Se não for selecionado nenhum Option, exibir mensagem de erro
+
+If frmLista.opt_nome = False And frmLista.opt_empresa = False And frmLista.opt_dataNascimento = False And frmLista.opt_cidade = False Then
+
+    MsgBox "Selecione uma opção para filtrar", vbCritical, "Atenção"
+    
+Exit Sub
+'caso um option seja selecionado, valor da variavel coluna será adicionado
+    ElseIf frmLista.opt_nome = True Then
+    coluna = 2 'nome
+            
+    ElseIf frmLista.opt_empresa = True Then
+    coluna = 18 ' empresa
+                    
+    ElseIf frmLista.opt_dataNascimento = True Then
+    coluna = 3 'dataNascimento
+                    
+    ElseIf frmLista.opt_cidade = True Then
+    coluna = 7 'cidade
+    
+    
+       
+   End If
+linha = 2
+
+ListView1.ListItems.Clear
+
+xPesq = frmLista.txt_pesquisa
+regs = Range("a" & Rows.Count).End(xlUp).Row
+
+Set w = Sheets("Cliente")
+
+
+    'Enquanto célula da coluna 2 não estiver vazia, faça isso:
+    
+    If coluna = 2 Then
+    
+        
+With w
+   While .Cells(linha, 2).Value <> ""
+        
+       Me.ListView1.ListItems.Clear
+       
+        While .Cells(linha, 2) <> ""
+  
+        
+            For coluna = 2 To 25
+                xCel = .Cells(linha, coluna)
+                
+                    If InStr(1, UCase(xCel), UCase(xPesq), 1) Then
+                   
+                    
+                     Set lv = ListView1.ListItems.Add(Text:=w.Cells(linha, 1)) 'código
+                    
+                         lv.SubItems(1) = w.Cells(linha, 2)
+                         
+                        lv.SubItems(2) = w.Cells(linha, 3) 'Idade
+                        lv.SubItems(3) = w.Cells(linha, 4)    'endereço
+                        lv.SubItems(4) = w.Cells(linha, 5)    'número
+                        lv.SubItems(5) = w.Cells(linha, 6)    'Bairro
+                        lv.SubItems(6) = w.Cells(linha, 7) 'Cidade
+                        lv.SubItems(7) = w.Cells(linha, 8)    'cep
+                        lv.SubItems(8) = w.Cells(linha, 9)    'telefone
+                        lv.SubItems(9) = w.Cells(linha, 10)   'celular
+                        lv.SubItems(10) = w.Cells(linha, 11)  'email
+                        lv.SubItems(11) = w.Cells(linha, 12)  'datA CADASTRO
+                        lv.SubItems(12) = w.Cells(linha, 13) 'Data Curriculo
+                        lv.SubItems(13) = w.Cells(linha, 17)  'Trabalha?
+                        lv.SubItems(14) = w.Cells(linha, 18) 'Empresa
+                        lv.SubItems(15) = w.Cells(linha, 19) 'Função
+                        lv.SubItems(16) = w.Cells(linha, 20) 'Escolaridade
+                        lv.SubItems(17) = w.Cells(linha, 22) 'Instituição de Ensino
+                        lv.SubItems(18) = w.Cells(linha, 23)
+                        lv.SubItems(19) = w.Cells(linha, 24) 'Data Processo Seletivo
+                        lv.SubItems(20) = w.Cells(linha, 25) 'perfil
+                         GoTo proxima_linha1
+                            
+                                 
+            
+            End If
+            Next coluna
+proxima_linha1:
+            linha = linha + 1
+            lblreg = ListView1.ListItems.Count
+            
+'           
+'
+
+            Wend
+           Wend
+         End With
+         End If
+End Sub
